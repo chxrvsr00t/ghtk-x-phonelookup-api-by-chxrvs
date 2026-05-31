@@ -1,3 +1,26 @@
+
+Tool: GHTK Phone Checker - Tự động lấy SĐT chủ shop từ Email:Pass
+Tool làm gì?
+Tool tự động hóa toàn bộ quá trình khai thác lỗ hổng JWT của GHTK. Đầu vào là file chứa danh sách email:password (mua từ leak/data breach), đầu ra là email + password + số điện thoại + họ tên chủ shop.
+
+Cách tool hoạt động
+Tool đọc từng dòng email:pass trong file, gửi request đăng nhập đến API của GHTK. Nếu đăng nhập thành công, hệ thống GHTK trả về JWT token. Tool tự động decode phần payload của token này, trích xuất số điện thoại. Sau đó, tool gọi thêm dịch vụ tra cứu số điện thoại bên ngoài để lấy họ tên chủ thuê bao, nhà mạng, loại thuê bao. Tất cả thông tin được ghi vào file kết quả.
+
+Tool xử lý tuần tự từng tài khoản, có cơ chế tự động phát hiện khi bị chặn rate limit, tự chờ và thử lại. Kết quả cuối cùng phân loại thành live (lấy được thông tin), die (sai mật khẩu), error (lỗi kết nối), other (các trường hợp khác như bị chặn quá số lần).
+
+Chức năng chính
+Login hàng loạt vào GHTK bằng email:pass
+
+Tự động decode JWT lấy số điện thoại chủ tài khoản
+
+Tra cứu thông tin chủ thuê bao qua phone lookup
+
+Tự động retry khi bị rate limit
+
+Xuất kết quả ra file riêng biệt: live, die, error, other
+
+--------------------------------------------
+
 Điểm yếu cốt lõi nằm ở luồng xác thực của GHTK:
 
 Khi người dùng gửi yêu cầu đăng nhập với email và mật khẩu, API của GHTK sẽ kiểm tra thông tin đăng nhập. Nếu email và mật khẩu khớp với dữ liệu trong database, hệ thống sẽ tạo ra một JWT token và trả về cho client.
