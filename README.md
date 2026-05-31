@@ -58,6 +58,18 @@ Loại thuê bao (trả trước hay trả sau)
 
 Thời gian kích hoạt sim
 
+--------------------------------------
+
+Chức năng chính: Tool tự động login hàng loạt tài khoản GHTK bằng email:pass, decode JWT lấy số điện thoại, rồi tra cứu thông tin chủ thuê bao.
+
+Kết hợp 2 lỗ hỏng:
+
+Lỗ hỏng của GHTK - API login không check tài khoản active hay đã khóa, cứ email:pass đúng là trả JWT chứa SĐT plain text trong payload. Không captcha, không giới hạn.
+
+Lỗ hỏng của bên phone lookup - API tra số điện thoại public không cần auth, trả về tên chủ thuê bao, nhà mạng, loại sim, thời gian kích hoạt.
+
+Kết quả: Ghép 2 lỗ hỏng lại → từ email:pass mua trên chợ đen ra được email + SĐT + họ tên chủ shop. Tự động hóa hàng loạt.
+
 Tình trạng thuê bao
 
 Từ một email và mật khẩu, kẻ tấn công giờ đây có trong tay một hồ sơ cá nhân gần như hoàn chỉnh của nạn nhân, bao gồm email, số điện thoại, họ tên, và nhiều thông tin khác.
